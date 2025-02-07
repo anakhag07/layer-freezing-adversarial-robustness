@@ -1,0 +1,572 @@
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<link rel="shortcut icon" href="images/icon.ico">
+<style type="text/css">
+	body {
+		background-color: #f5f9ff;
+	}
+
+	/* Hide both math displays initially, will display based on JS detection */
+  .mathjax-mobile, .mathml-non-mobile { display: none; }
+
+  /* Show the MathML content by default on non-mobile devices */
+  .show-mathml .mathml-non-mobile { display: block; }
+  .show-mathjax .mathjax-mobile { display: block; }
+
+	.content-margin-container {
+		display: flex;
+		width: 100%; /* Ensure the container is full width */
+		justify-content: left; /* Horizontally centers the children in the container */
+		align-items: center;  /* Vertically centers the children in the container */
+	}
+	.main-content-block {
+		width: 70%; /* Change this percentage as needed */
+    max-width: 1100px; /* Optional: Maximum width */
+		background-color: #fff;
+		border-left: 1px solid #DDD;
+		border-right: 1px solid #DDD;
+		padding: 8px 8px 8px 8px;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+	}
+	.margin-left-block {
+			font-size: 14px;
+			width: 15%; /* Change this percentage as needed */
+			max-width: 130px; /* Optional: Maximum width */
+			position: relative;
+			margin-left: 10px;
+			text-align: left;
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			padding: 5px;
+	}
+	.margin-right-block {
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-size: 14px;
+			width: 25%; /* Change this percentage as needed */
+			max-width: 256px; /* Optional: Maximum width */
+			position: relative;
+			text-align: left;
+			padding: 10px;  /* Optional: Adds padding inside the caption */
+	}
+
+	img {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: 0 auto;
+	}
+	.my-video {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	/* Hide both video displays initially, will display based on JS detection */
+  .vid-mobile, .vid-non-mobile { display: none; }
+
+  /* Show the video content by default on non-mobile devices */
+  .show-vid-mobile .vid-mobile { display: block; }
+  .show-vid-non-mobile .vid-non-mobile { display: block; }
+
+	a:link,a:visited
+	{
+		color: #0e7862; /*#1367a7;*/
+		text-decoration: none;
+	}
+	a:hover {
+		color: #24b597; /*#208799;*/
+	}
+
+	h1 {
+		font-size: 18px;
+		margin-top: 4px;
+		margin-bottom: 10px;
+	}
+
+	table.header {
+    font-weight: 300;
+    font-size: 17px;
+    flex-grow: 1;
+		width: 70%;
+    max-width: calc(100% - 290px); /* Adjust according to the width of .paper-code-tab */
+    /* Remove any borders for header table */
+    border: none;
+	}
+
+	/* Remove borders for header table cells */
+	table.header td {
+	    border: none;
+	    padding: 8px;
+	    text-align: left;
+	}
+
+	/* Separate styling for data tables */
+	.table-container table {
+	    margin: 0 auto;
+	    border-collapse: collapse;
+	    width: auto;
+	    border: 1px solid #000;
+	}
+
+	.table-container table th,
+	.table-container table td {
+	    padding: 8px;
+	    text-align: center;
+	    border: 1px solid #000;
+	}
+
+	.table-container table th {
+	    background-color: #f5f5f5;
+	    font-weight: bold;
+	}
+
+	table td, table td * {
+	    vertical-align: middle;
+	    position: relative;
+	}
+	table.paper-code-tab {
+	    flex-shrink: 0;
+	    margin-left: 8px;
+	    margin-top: 8px;
+	    padding: 0px 0px 0px 8px;
+	    width: 290px;
+	    height: 150px;
+	}
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+
+	hr {
+    height: 1px; /* Sets the height of the line to 1 pixel */
+    border: none; /* Removes the default border */
+    background-color: #DDD; /* Sets the line color to black */
+  }
+
+	div.hypothesis {
+		width: 80%;
+		background-color: #EEE;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		font-family: Courier;
+		font-size: 18px;
+		text-align: center;
+		margin: auto;
+		padding: 16px 16px 16px 16px;
+	}
+
+	div.citation {
+    font-size: 0.8em;
+    background-color:#fff;
+    padding: 10px;
+		height: 200px;
+  }
+
+	.fade-in-inline {
+		position: absolute;
+		text-align: center;
+		margin: auto;
+		-webkit-mask-image: linear-gradient(to right,
+																			transparent 0%,
+																			transparent 40%,
+																			black 50%,
+																			black 90%,
+																			transparent 100%);
+		mask-image: linear-gradient(to right,
+																transparent 0%,
+																transparent 40%,
+																black 50%,
+																black 90%,
+																transparent 100%);
+		-webkit-mask-size: 8000% 100%;
+		mask-size: 8000% 100%;
+		animation-name: sweepMask;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-delay: -1s;
+	}
+
+	.fade-in2-inline {
+			animation-delay: 1s;
+	}
+
+	.inline-div {
+			position: relative;
+	    display: inline-block; /* Makes both the div and paragraph inline-block elements */
+	    vertical-align: top; /* Aligns them at the top, you can adjust this to middle, bottom, etc., based on your needs */
+	    width: 50px; /* Optional: Adds space between the div and the paragraph */
+	}
+
+	.figure-container {
+		margin: 20px auto;
+		text-align: center;
+		max-width: 100%;
+	}
+
+	.figure-caption {
+		color: #666;
+		font-size: 14px;
+		font-style: italic;
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.table-container {
+		margin: 20px auto;
+		text-align: center;
+		max-width: 100%;
+	}
+
+	.table-caption {
+		color: #666;
+		font-size: 14px;
+		font-style: italic;
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	table {
+		margin: 0 auto;
+		border-collapse: collapse;
+		width: auto;
+		border: 1px solid #000;
+	}
+
+	table th, table td {
+		padding: 8px;
+		text-align: center;
+		border: 1px solid #000;
+	}
+
+	/* Optional: Make headers stand out */
+	table th {
+		background-color: #f5f5f5;
+		font-weight: bold;
+	}
+
+</style>
+
+	  <title>Layer Freezing and Adversarial Accuracy</title>
+      <meta property="og:title" content="The Platonic Representation Hypothesis" />
+			<meta charset="UTF-8">
+  </head>
+
+  <body>
+
+		<div class="content-margin-container">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<table class="header" align=left>
+								<tr>
+									<td colspan=4>
+										<span style="font-size: 32px; font-family: 'Courier New', Courier, monospace; /* Adds fallbacks */">Layer Freezing as a Technique to Improve Adversarial Robustness and Accuracy</span>
+									</td>
+								</tr>
+								<tr>
+										<td align=left>
+												<span style="font-size:17px"><a href="your_website">Anakha Ganesh</a></span>
+										</td>
+								<tr>
+									<td colspan=4 align=left><span style="font-size:18px">Final project for 6.7960, MIT</span></td>
+								</tr>
+						</table>
+					</div>
+					<div class="margin-right-block">
+					</div>
+		</div>
+
+		<div class="content-margin-container" id="abstract">
+				<div class="margin-left-block">
+          <!-- table of contents here -->
+          <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
+              <b style="font-size:16px">Outline</b><br><br>
+			  <a href="#abstract">Abstract</a><br><br>
+              <a href="#intro">Introduction</a><br><br>
+			  <a href="#related_work">Related Work</a><br><br>
+			  <a href="#methodology">Methodology</a><br><br>
+			  <a href="#results">Results and Analysis</a><br><br>
+			  <a href="#conclusion">Conclusion</a><br><br>
+			  <a href="#references">References</a><br><br>
+          </div>
+		</div>	   
+	</div>
+	
+	<div class="content-margin-container" id="abstract">
+		<div class="margin-left-block">
+		</div>
+		<div class="main-content-block">
+			<h1>Abstract</h1>
+			<p>This study explores the use of layer freezing techniques to improve adversarial robustness and accuracy in machine learning models. Machine learning models that are trained adversarially are critical for applications such as autonomous driving and scan identification. The research focuses on addressing the robustness gap, where models optimized for adversarial robustness often suffer a decrease in natural accuracy. Using the CIFAR-10 dataset and a ResNet18 architecture, three experiments were conducted: a control with no frozen layers, half of the layers frozen, and a fine-tuned model with only the last layer unfrozen.</p>
+
+			<p>The results showed that the fine-tuned model (experiment 3) performed best in terms of both accuracy on natural inputs and adversarial robustness. The half-frozen model (experiment 2) ranked second in accuracy, while the control model (experiment 1) was second in adversarial robustness. These findings suggest that preserving latent features through layer freezing can potentially improve the trade-off between robustness and accuracy.</p>
+
+			<p>However, the study also revealed limitations, such as the shallow architecture of ResNet18 potentially affecting the effectiveness of adversarial training. Future work could explore deeper networks, different layer freezing techniques, and more extensive hyperparameter tuning. This research provides a foundation for further investigation into using layer freezing to enhance the performance of adversarially trained models, which is crucial for improving the reliability and security of machine learning applications in critical domains.</p>
+		</div>
+		<div class="margin-right-block">
+		</div>
+	</div>
+
+    <div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Introduction</h1>
+            <p>With the advent of machine learning into real-world settings, a growing concern has become how to protect machine learning models from adversaries. In settings such as autonomous driving, something as simple as a sticker on a stop sign can cause a computer vision model to misclassify the sign and cause potentially deadly outcomes on the road <a href="#ref_1">[1]</a>. Adversarial training has emerged as a way to mitigate these adversaries. In computer vision, adversarial training involves perturbing the input in some way (i.e. random flips, cropping, pixel mutation) and training the model to classify the perturbed input correctly.</p>
+
+            <p>However, adversarial training suffers from a robustness gap. When a model is optimized for adversarial robustness, it suffers a cost to its natural accuracy, or the accuracy on unperturbed inputs <a href="#ref_2">[2]</a>. It has been proposed that this gap may arise because of a feature entanglement, where the latent features of the natural input are modified during adversarial training to represent features of the perturbed input <a href="#ref_3">[3]</a>. In deep neural networks, it has been proposed that the first subset of layers captures the fundamental features of the input <a href="#ref_4">[4]</a>. A method to capture these latent features from the input and hold them steady during adversarial training could improve the robustness gap by preserving the model's performance on natural input while allowing it to learn from adversarial input.</p>
+
+            <p>In standard training schemes typically without perturbation of the training set, transfer learning is a technique to initialize a model with pretrained weights instead of starting from random initialization. Akin to the robustness gap in adversarial training schemes, issues like catastrophic forgetting can occur in transfer learning, where the model forgets how to correctly handle earlier examples it was trained on as new examples come in and the functions are overwritten <a href="#ref_5">[5]</a>. One method to handle this issue is layer freezing, where specific layer weights are held steady while the rest of the layers are trained <a href="#ref_6">[6]</a>. Intuitively, this allows the fundamental latent features learned from the input to remain constant, while the later layers learn how to adapt to a specific task.</p>
+
+            <p>While many novel layer freezing methods have been proposed to improve training schemes without perturbed inputs, less is known about if layer freezing can accelerate performance in other deep learning schemes. This paper proposes a novel approach to improving the robustness gap in adversarial training by exploring layer freezing in adversarial training. Specifically, it observes whether adversarial training without any frozen layers, with half of the layers frozen, or with most layers excluding a single layer for finetuning will perform better on natural and adversarial examples. This work can provide a starting point for utilizing layer freezing techniques in transfer learning to reduce the adversarial robustness gap.</p>
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+		<div class="content-margin-container" id="related_work">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Related Work</h1>
+            <p>Past research has quantified that improving adversarial robustness of a model comes at a cost to its accuracy on unperturbed samples, i.e. a gap in robustness and accuracy <a href="#ref_7">[7]</a>. Prior work has sought to improve the robustness gap in adversarial defense schemes by aligning the classifier boundary of the robust model with the boundary achieved from the model trained with clean (unperturbed) data <a href="#ref_2">[2]</a>. This is achieved by adding a minimization term for the difference between the model's learned boundaries with adversarial examples and the prior learned boundaries for natural examples into the optimization formulation. Other research has observed the phenomenon of feature entanglement, where the latent features of natural input and adversarial input are entangled, and sought to disentangle these features via linear layers which take the mixed features as input <a href="#ref_3">[3]</a>. These works all build on the intuitive idea that training schemes on clean data output a collection of latent features which are "correct." Adversarial training can alter this modeling of latent features, and these prior works seek to preserve this representation in some form.</p>
+
+            <p>Some research has also quantified the potential positive effects of layer freezing on the performance of an adversarial model. Studies performed by restricting the contribution of each layer to adversarial training quantify that the early layers contribute more to increasing adversarial robustness compared to the later layers in a model <a href="#ref_8">[8]</a>. These findings along with the idea that latent features from a naturally trained model must be preserved allowed the hypothesis to arise that layer freezing would be beneficial in improving both adversarial robustness and accuracy for a machine learning classification model.</p>
+
+            <p>Significant progress has been made in the realm of layer freezing to inform the methodologies chosen in this project. Progressive freezing of layers follows the typical heuristic that earlier layers discriminate on more important information, but instead of freezing a subset of layers at a time, the layers are progressively frozen <a href="#ref_9">[9]</a>. Knowledge-guided layer freezing uses the idea that earlier training layers converge faster, and EGERIA, a knowledge guided deep net training system, is used to quantify the training progress of initial layers and freeze them appropriately <a href="#ref_10">[10]</a>. Another adaptive technique involves freezing layers once the gradient settles, indicating that the weight is settling into a local minima of the gradient function <a href="#ref_11">[11]</a>. These methods of layer freezing are all performed on deep neural networks which did not train on adversarial examples. These methods helped inform the experiments run on adversarial training schemes. A key novelty in this project is to explore if the layer freezing techniques in standard training schemes can improve the adversarial robustness and accuracy of adversarial models.</p>
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+		<div class="content-margin-container" id="methodology">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Methodology</h1>
+            <p>The hypothesis proposed in this experiment is that layer freezing will improve both the accuracy and adversarial robustness of the model. Specifically, it is hypothesized that the model with the initial half of its layers frozen will perform better than the finetuned model, which will perform better than the control model since the half frozen model has more layers to preserve its latent features and more layers to improve performance on adversarial inputs.</p>
+
+            <div class="figure-container">
+                <img src="images/figure1.png" alt="ResNet18 Architecture">
+                <p class="figure-caption">Figure 1: Resnet18 model architecture <a href="#ref_12">[12]</a></p>
+            </div>
+
+            <p>The dataset used was CIFAR-10, containing 60,000 32 x 32 color images classified into 10 different classes <a href="#ref_13">[13]</a>. The base model used to identify the images was Resnet18, which utilizes a shallow architecture with skip connections and propagation of residuals to perform better identification of images <a href="#ref_14">[14]</a>. Resnet18 was chosen due to its quick training time and high accuracy. A fully connected layer was added to Resnet18 to map the output channels to the size of CIFAR-10 output channels (10), and the images were converted to tensors. The Resnet18 model was initialized with its pretrained values and trained for 20 epochs in a standard fashion without any adversarial training. From here, the Resnet18 model trained on CIFAR-10 data will be referred to as the base model. This base model formed the basis for the three experiments conducted.</p>
+
+            <div class="equation-container">
+				<style>
+					.equation-container {
+						text-align: center; /* Center aligns everything inside the container */
+					}
+			
+					.equation-caption {
+						font-size: 14px; /* Adjust the caption font size */
+						margin-top: 10px; /* Add spacing between the equation and caption */
+						font-style: italic;
+					}
+				</style>
+                <script type="text/javascript" async
+                    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+                </script>
+                <div class="equation">
+                    \[
+                    \arg\min_\theta \mathbb{E}_{(x,y)\sim\mathcal{D}}\left\{\max_{\delta\in\mathcal{S}}L(\theta,x+\delta,y)\right\}
+                    \]
+                </div>
+                <p class="equation-caption">Equation 1: Adversarial Training Objective <a href="#ref_15">[15]</a></p>
+            </div>
+
+            <p>The next stage involved adversarial training. Three variations of the base model were constructed with different variants of layer freezing, all of which utilized the following adversarial training scheme. The projected gradient descent (PGD) attack was chosen since it traditionally generates strong adversarial examples and is canonically used when other parameters about an adversarial attack aren't specified <a href="#ref_16">[16]</a>. This method makes small changes to input data to take advantage of a model's gradient calculation to force a mistake. This training scheme was adapted from a publicly available adversarial training implementation on CIFAR-10 <a href="#ref_17">[17]</a>. This method contains modifications to the actual adversary generation, where the advertorch package was used instead of custom generation of PGD attacks.</p>
+
+            <div class="figure-container">
+                <img src="images/figure2.png" alt="Experiment Setup">
+                <p class="figure-caption">Figure 2: Experiment Setup</p>
+            </div>
+
+            <p>Three experiments were conducted. The first experiment was a control experiment, where none of the layers were frozen. The second experiment involved layer freezing half of the layers in the base model. This was informed by prior work where half of the layers were frozen to observe layer freezing and adversarial robustness. The third experiment followed the heuristics for finetuning. All layers were frozen except for the last, fully connected layer, which was trained adversarially. Hyperparameters were determined by manual exploration and time constraints. Each model was trained with cross entropy loss, and a stochastic gradient descent optimizer. These experiments were trained for 25 epochs due to time constraints, with a learning rate of 0.01.</p>
+
+            <div class="figure-container">
+                <img src="images/figure3.png" alt="PGD Perturbation">
+                <p class="figure-caption">Figure 3: PGD Perturbation <a href="#ref_18">[18]</a></p>
+            </div>
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+		<div class="content-margin-container" id="results">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Results</h1>
+            <p>For the following discussions of results, natural inputs refers to unperturbed inputs whereas adversarial inputs refers to inputs perturbed by the PGD attack scheme. Experiment 1 refers to the control experiment where no layers are frozen. Experiment 2 refers to half the layers being frozen. Experiment 3 refers to the finetuned model, where only the last layer is not frozen. Adversarial robustness refers to the accuracy of models on inputs perturbed by the PGD attack scheme.</p>
+
+            <div class="figure-container">
+                <img src="images/figure4.png" alt="Training and Validation Loss">
+                <p class="figure-caption">Figure 4: Training and Validation Loss for Basic Model</p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Best Validation Accuracy</th>
+                        <th>Epoch</th>
+                    </tr>
+                    <tr>
+                        <td>84.45%</td>
+                        <td>18</td>
+                    </tr>
+                </table>
+                <p class="table-caption">Table 1: Validation Accuracy for Basic Model</p>
+            </div>
+
+            <p>The basic model (Resnet18 with an additional fully connected layer trained on CIFAR-10) was trained for 20 epochs in batches on the CIFAR-10 dataset. It used a cross entropy loss function with a learning rate of 0.01 to classify each image into one of ten labels. Predictably, it performed well on the natural inputs with a validation accuracy of 84.45%. The model appeared to converge around epoch 18 of 20, and the best model was saved from this epoch. This model was then modified to run the three experiments discussed.</p>
+		    
+			<div class="figure-container">
+				<style>
+					.figure-container img {
+						width: 75%; /* Set the image to take 75% of the container's width */
+						height: auto; /* Maintain the aspect ratio of the image */
+					}
+				</style>
+                <img src="images/figure5.png" alt="Experiment 1 Validation Loss">
+                <p class="figure-caption">Figure 5: Experiment 1 Validation Loss</p>
+            </div>
+
+			<div class="figure-container">
+				<style>
+					.figure-container img {
+						width: 75%; /* Set the image to take 75% of the container's width */
+						height: auto; /* Maintain the aspect ratio of the image */
+					}
+				</style>
+                <img src="images/figure6.png" alt="Experiment 2 Validation Loss">
+                <p class="figure-caption">Figure 6: Experiment 2 Validation Loss</p>
+            </div>
+
+			<div class="figure-container">
+				<style>
+					.figure-container img {
+						width: 75%; /* Set the image to take 75% of the container's width */
+						height: auto; /* Maintain the aspect ratio of the image */
+					}
+				</style>
+                <img src="images/figure7.png" alt="Experiment 3 Validation Loss">
+                <p class="figure-caption">Figure 7: Experiment 3 Validation Loss</p>
+            </div>
+
+			<div class="figure-container">
+				<style>
+					.figure-container img {
+						width: 75%; /* Set the image to take 75% of the container's width */
+						height: auto; /* Maintain the aspect ratio of the image */
+					}
+				</style>
+                <img src="images/figure8.png" alt="Benign and Adversarial Loss Comparison">
+                <p class="figure-caption">Figure 8: Benign and Adversarial Loss Comparison</p>
+            </div>
+
+			<p>All models were trained for 25 epochs. At each epoch, it was adversarially trained in batches with a batch size of 128 and a learning rate of 0.01. The model was fed adversarial inputs perturbed by the PGD attack scheme at each step, and it was tested on both natural and adversarial inputs to observe performance over time. </p>
+			<p>During validation, the adversarial loss did not seem to decrease significantly for any of the three experiments. As indicated by the graph over time, the loss oscillated during training for experiment 2 (half frozen layers) and experiment 3 (finetuned model) over natural and adversarial inputs. With experiment 1 (control), the adversarial loss oscillated around the same values, but the control performed very poorly on benign inputs. Within the first 10 epochs, the loss on natural inputs significantly increased and the corresponding accuracy significantly decreased. Overall, the adversarial loss for all three experiments oscillated instead of decreasing over time, likely due to the shallowness of the network. Both models with frozen layers maintained their accuracies on natural inputs. This could be because the latent features were in the layers that were frozen. </p>
+			
+			<div class="table-container">
+				<table>
+					<tr>
+						<th></th>
+						<th>Experiment 1</th>
+						<th>Experiment 2</th>
+						<th>Experiment 3</th>
+					</tr>
+					<tr>
+						<td>Accuracy</td>
+						<td>10%</td>
+						<td>20.03%</td>
+						<td>26.81%</td>
+					</tr>
+					<tr>
+						<td>Adversarial Robustness</td>
+						<td>58%</td>
+						<td>55.73%</td>
+						<td>61.35%</td>
+					</tr>
+				</table>
+				<p class="table-caption">Table 2: Accuracy and Adversarial Robustness Comparison</p>
+			</div>
+
+			<div class="figure-container">
+				<style>
+					.figure-container img {
+						width: 75%; /* Set the image to take 75% of the container's width */
+						height: auto; /* Maintain the aspect ratio of the image */
+					}
+				</style>
+                <img src="images/figure9.png" alt="Figure 9: Accuracy and Adversarial Robustness Chart">
+                <p class="figure-caption">Figure 9: Accuracy and Adversarial Robustness Chart</p>
+            </div>
+
+			<p>The finetuned model (experiment 3) performed the best with regards to the accuracy on natural inputs and the adversarial robustness. The half frozen model (experiment 2) performed second best with accuracy, and the control model (experiment 1) performed second best with adversarial robustness. There are several potential reasons for the performance of the experiments as shown. First, consider experiment 1. When the base model is adversarially trained, it diverges from the optimal performance on natural inputs as this is not the optimum it is trying to achieve. For all experiments, the adversarial loss only changes slightly and does not converge. This is likely because adversarial training is traditionally applied to deep neural networks, which is where the possibility of misclassifying one perturbed input increases when there is more potential of overfitting <a href="#ref_19">[19]</a>. The Resnet18 architecture is rather shallow, with only eighteen layers. Thus, the adversarial training was likely not able to reach an optimum with few layers to fit a complex input on. Experiments 1 and 3 did achieve an increasing accuracy over time. In experiment 1, the fact that none of the layers were frozen allowed a “deeper” scheme for adversarial training to improve the performance of the model on perturbed inputs. In experiment 3, only allowing the last layer to be modified preserved the latent features of the base model. This, combined with the optimization for adversaries in the last fully connected layer, could have allowed for the model of experiment 3 to learn from adversarial inputs while maintaining its optimal performance on natural inputs. The model of experiment 2 seemed to maintain its accuracy on natural inputs but not be able to learn from adversarial inputs, as indicated by the oscillating loss. More work must be done to understand the depth at which adversarial training works positively with standard training. Overall, these results partially supported the hypothesis that freezing layers would help with accuracy and adversarial robustness. However, the finetuned model performed better than the model with the first half of layers frozen, contrary to the hypothesis. </p>
+			<p>Future explorations could include experimenting with a deeper network such as Resnet50, or utilizing a standard classification model with a suboptimal performance on CIFAR-10 such that any improvements can be strictly attributed to the experimental changes in architecture. Another improvement could be a grid search on hyperparameters and more epochs of training; with more time and compute resources, this could allow stronger convergence of the model. Additionally, layer freezing techniques could be explored in more detail. This work utilized a half layer freezing implementation from previous work by Bakiskan on adversarial training <a href="#ref_8">[8]</a>. However, the techniques for layer freezing that have been explored in deep neural nets such as progressively freezing layers or freezing layers when the gradient settles could be applicable to deep nets trained with adversarial training schemes.   </p>
+			</div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="conclusion">
+			<div class="margin-left-block">
+			</div>
+			<div class="main-content-block">
+				<h1>Conclusions</h1>
+				<p>This research presents foundational results regarding the possibility of layer freezing improving the gap in adversarial robustness and accuracy. More work must be done to determine whether other layer freezing techniques have viability in improving the robustness gap, but these initial experiments demonstrate that finetuning a model adversarially improves both its accuracy on natural inputs and on adversarial inputs. Extensions of this work could involve observing performance of layer freezing on different adversarial attack schemes and deeper neural networks. An interesting study would be quantifying which layers of a deep net hold the important latent features and freezing them. This could involve freezing layers 1 through n one by one and observing the performance on robustness and accuracy on natural inputs. 
+				</p>
+				<p>Improving adversarial robustness and accuracy is critical for ensuring the reliability and security of machine learning applications, particularly in high-stakes domains such as healthcare and autonomous driving. Improving accuracy in adversarial scenarios ensures that models perform reliably under diverse and challenging conditions, allowing machine learning to continue to be integrated into critical infrastructure. 
+				</p>
+			</div>
+			<div class="margin-right-block">
+			</div>
+		</div>
+
+		<div class="content-margin-container" id="references">
+			<div class="margin-left-block"></div>
+			<div class="main-content-block">
+				<div class="citation" id="references" style="height:auto"><br>
+					<span style="font-size:16px">References:</span><br><br>
+					<a id="ref_1"></a>[1] Eykholt, K., Evtimov, I., Fernandes, E., Li, B., Rahmati, A., Xiao, C., Prakash, A., Kohno, T., & Song, D. (2018, June 1). Robust Physical-World Attacks on Deep Learning Visual Classification. IEEE Xplore. <a href="https://doi.org/10.1109/CVPR.2018.00175">https://doi.org/10.1109/CVPR.2018.00175</a><br><br>
+					<a id="ref_2"></a>[2] Cui, J., Liu, S., Wang, L., & Jia, J. (2021). Learnable Boundary Guided Adversarial Training. <a href="https://doi.org/10.1109/iccv48922.2021.01543">https://doi.org/10.1109/iccv48922.2021.01543</a><br><br>
+					<a id="ref_3"></a>[3] Zhou, N., Zhou, D., Liu, D., Gao, X., & Wang, N. (2024). Mitigating Feature Gap for Adversarial Robustness by Feature Disentanglement. ArXiv (Cornell University). <a href="https://doi.org/10.48550/arxiv.2401.14707">https://doi.org/10.48550/arxiv.2401.14707</a><br><br>
+					<a id="ref_4"></a>[4] Filtjens, B., Ginis, P., Nieuwboer, A., Afzal, M. R., Spildooren, J., Vanrumste, B., & Slaets, P. (2021). Modelling and identification of characteristic kinematic features preceding freezing of gait with convolutional neural networks and layer-wise relevance propagation. BMC Medical Informatics and Decision Making, 21(1). <a href="https://doi.org/10.1186/s12911-021-01699-0">https://doi.org/10.1186/s12911-021-01699-0</a><br><br>
+					<a id="ref_5"></a>[5] Galatro, D., Machavolu, M., & Navas, G. (2024). Transfer learning strategies for neural networks: A case study in amine gas treating units. Results in Engineering, 24, 103027. <a href="https://doi.org/10.1016/j.rineng.2024.103027">https://doi.org/10.1016/j.rineng.2024.103027</a><br><br>
+					<a id="ref_6"></a>[6] Iman, M., Arabnia, H. R., & Rasheed, K. (2023). A Review of Deep Transfer Learning and Recent Advancements. Technologies, 11(2), 40. <a href="https://doi.org/10.3390/technologies11020040">https://doi.org/10.3390/technologies11020040</a><br><br>
+					<a id="ref_7"></a>[7] Zhang, H., Yu, Y., Jiao, J., Xing, E. P., Laurent El Ghaoui, & Jordan, M. I. (2019). Theoretically Principled Trade-off between Robustness and Accuracy. International Conference on Machine Learning, 7472–7482. <a href="https://proceedings.mlr.press/v97/zhang19p/zhang19p.pdf">https://proceedings.mlr.press/v97/zhang19p/zhang19p.pdf</a><br><br>
+					<a id="ref_8"></a>[8] Bakiskan, C., Cekic, M., & Madhow, U. (n.d.). Early Layers Are More Important For Adversarial Robustness. Retrieved December 10, 2024, from <a href="https://advml-frontier.github.io/past/icml2022/pdf/51/CameraReady/ICML_2022_AdvML_Workshop.pdf">https://advml-frontier.github.io/past/icml2022/pdf/51/CameraReady/ICML_2022_AdvML_Workshop.pdf</a><br><br>
+					<a id="ref_9"></a>[9] Brock, A., Lim, T., Ritchie, J. M., & Weston, N. (2017). FreezeOut: Accelerate Training by Progressively Freezing Layers. ArXiv (Cornell University). <a href="https://doi.org/10.48550/arxiv.1706.04983">https://doi.org/10.48550/arxiv.1706.04983</a><br><br>
+					<a id="ref_10"></a>[10] Wang, Y., Sun, D., Chen, K., Lai, F., & Chowdhury, M. (2023). Egeria: Efficient DNN Training with Knowledge-Guided Layer Freezing. Rare & Special E-Zone (the Hong Kong University of Science and Technology). <a href="https://doi.org/10.1145/3552326.3587451">https://doi.org/10.1145/3552326.3587451</a><br><br>
+					<a id="ref_11"></a>[11] Xiao, X., Thosini Bamunu Mudiyanselage, Ji, C., Hu, J., & Pan, Y. (2019). Fast Deep Learning Training through Intelligently Freezing Layers. 1225–1232. <a href="https://doi.org/10.1109/ithings/greencom/cpscom/smartdata.2019.00205">https://doi.org/10.1109/ithings/greencom/cpscom/smartdata.2019.00205</a><br><br>
+					<a id="ref_12"></a>[12] Fig. 2 Original ResNet-18 Architecture. (n.d.). ResearchGate. <a href="https://www.researchgate.net/figure/Original-ResNet-18-Architecture_fig1_336642248">https://www.researchgate.net/figure/Original-ResNet-18-Architecture_fig1_336642248</a><br><br>
+					<a id="ref_13"></a>[13] Krizhevsky, A. (2009). CIFAR-10 and CIFAR-100 datasets. Toronto.edu. <a href="https://www.cs.toronto.edu/~kriz/cifar.html">https://www.cs.toronto.edu/~kriz/cifar.html</a><br><br>
+					<a id="ref_14"></a>[14] He, K., Zhang, X., Ren, S., & Sun, J. (2015). Deep Residual Learning for Image Recognition. <a href="https://doi.org/10.48550/arxiv.1512.03385">https://doi.org/10.48550/arxiv.1512.03385</a><br><br>
+					<a id="ref_15"></a>[15] Madry, A., Aleksandar Makelov, Schmidt, L., Dimitris Tsipras, & Vladu, A. (2017). Towards Deep Learning Models Resistant to Adversarial Attacks. <a href="https://doi.org/10.48550/arxiv.1706.06083">https://doi.org/10.48550/arxiv.1706.06083</a><br><br>
+					<a id="ref_16"></a>[16] Goodfellow, I., Shlens, J., & Szegedy, C. (2014). Explaining and Harnessing Adversarial Examples. ArXiv (Cornell University). <a href="https://doi.org/10.48550/arxiv.1412.6572">https://doi.org/10.48550/arxiv.1412.6572</a><br><br>
+					<a id="ref_17"></a>[17] xinglin-li. (2022). GitHub - xinglin-li/Adversarial-Training-on-CIFAR-10-by-Pytorch. GitHub. <a href="https://github.com/xinglin-li/Adversarial-Training-on-CIFAR-10-by-Pytorch/tree/main">https://github.com/xinglin-li/Adversarial-Training-on-CIFAR-10-by-Pytorch/tree/main</a><br><br>
+					<a id="ref_18"></a>[18] Knagg, O. (2019, January 6). Know your enemy. Medium. <a href="https://towardsdatascience.com/know-your-enemy-7f7c5038bdf3">https://towardsdatascience.com/know-your-enemy-7f7c5038bdf3</a><br><br>
+					<a id="ref_19"></a>[19] Wang, Z., Wang, H., Tian, C., & Jin, Y. (2023). Adversarial Training of Deep Neural Networks Guided by Texture and Structural Information. 4958–4967. <a href="https://doi.org/10.1145/3581783.3612163">https://doi.org/10.1145/3581783.3612163</a><br><br>
+				</div>
+			</div>
+			<div class="margin-right-block">
+				<!-- margin notes for reference block here -->
+			</div>
+		</div>		
+
+	</body>
+
+</html>
